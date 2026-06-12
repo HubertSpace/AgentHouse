@@ -772,6 +772,65 @@ impl From<PageSnapshot> for WebPreviewSnapshot {
 
 // ─── Native WebView Backend ─────────────────────────────────────────
 
+/// Browser backend using the system-native WebView on Linux.
+/// Wraps `ah_webview_linux::LinuxWebViewBackend` to implement `BrowserBackend`.
+#[cfg(target_os = "linux")]
+#[derive(Debug)]
+struct NativeWebViewBackend {
+    inner: ah_webview_linux::LinuxWebViewBackend,
+}
+
+#[cfg(target_os = "linux")]
+impl NativeWebViewBackend {
+    fn new() -> Result<Self, String> {
+        let inner = ah_webview_linux::LinuxWebViewBackend::new()?;
+        Ok(Self { inner })
+    }
+}
+
+#[cfg(target_os = "linux")]
+impl BrowserBackend for NativeWebViewBackend {
+    fn engine(&self) -> ah_web::BrowserEngine {
+        self.inner.engine()
+    }
+
+    fn open(&mut self, url: &str) -> Result<(), ah_web::WebError> {
+        self.inner.open(url)
+    }
+
+    fn navigate(&mut self, url: &str) -> Result<(), ah_web::WebError> {
+        self.inner.navigate(url)
+    }
+
+    fn reload(&mut self) -> Result<(), ah_web::WebError> {
+        self.inner.reload()
+    }
+
+    fn go_back(&mut self) -> Result<(), ah_web::WebError> {
+        self.inner.go_back()
+    }
+
+    fn go_forward(&mut self) -> Result<(), ah_web::WebError> {
+        self.inner.go_forward()
+    }
+
+    fn resize(&mut self, size: ViewportSize) -> Result<(), ah_web::WebError> {
+        self.inner.resize(size)
+    }
+
+    fn input(&mut self, input: BrowserInput) -> Result<(), ah_web::WebError> {
+        self.inner.input(input)
+    }
+
+    fn action(&mut self, action: &BrowserAction) -> Result<Option<String>, ah_web::WebError> {
+        self.inner.action(action)
+    }
+
+    fn snapshot(&mut self) -> Result<BrowserBackendSnapshot, ah_web::WebError> {
+        self.inner.snapshot()
+    }
+}
+
 /// Browser backend using the system-native WebView (WKWebView on macOS).
 /// Wraps `ah_webview_macos::WKWebViewProvider` to implement `BrowserBackend`.
 #[cfg(target_os = "macos")]
@@ -951,17 +1010,18 @@ impl BrowserRuntime {
     }
 
     /// Create a browser runtime using the system-native WebView.
-    /// AgentHouse 0.1.0 is macOS-only; native WebView failure is surfaced
-    /// instead of falling back to a different browser backend.
     fn new_native(
         title: impl Into<String>,
         url: impl Into<String>,
         wake_tx: mpsc::UnboundedSender<()>,
     ) -> Result<Self, String> {
         let backend = NativeWebViewBackend::new().map_err(|error| {
-            format!("native WKWebView backend is required for AgentHouse 0.1.0: {error}")
+            format!("native webview backend failed to initialize: {error}")
         })?;
+        #[cfg(target_os = "macos")]
         tracing::info!("native webview loaded; using system WKWebView backend");
+        #[cfg(target_os = "linux")]
+        tracing::info!("native webview loaded; using Linux webview backend");
         Ok(Self::new(title, url, Box::new(backend), Some(wake_tx)))
     }
 

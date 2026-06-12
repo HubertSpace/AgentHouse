@@ -17,7 +17,6 @@ ah-session.workspace = true
 ah-store.workspace = true
 ah-terminal.workspace = true
 ah-web.workspace = true
-ah-webview-macos = { path = "../ah-webview-macos" }
 ah-workspace.workspace = true
 anyhow.workspace = true
 gpui.workspace = true
@@ -28,6 +27,12 @@ thiserror.workspace = true
 tokio.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+ah-webview-macos = { path = "../ah-webview-macos" }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+ah-webview-linux = { path = "../ah-webview-linux" }
 
 [lints]
 workspace = true

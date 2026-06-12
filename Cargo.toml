@@ -8,6 +8,7 @@ members = [
     "crates/ah-block",
     "crates/ah-web",
     "crates/ah-webview-macos",
+    "crates/ah-webview-linux",
     "crates/ah-store",
     "crates/ah-control",
     "crates/ah-use",
@@ -32,9 +33,10 @@ ah-web = { path = "crates/ah-web" }
 ah-store = { path = "crates/ah-store" }
 ah-control = { path = "crates/ah-control" }
 ah-use = { path = "crates/ah-use" }
+ah-webview-linux = { path = "crates/ah-webview-linux" }
 alacritty_terminal = { git = "https://github.com/alacritty/alacritty.git", rev = "79adb086002be778cec5d3b90676594bfe2105bb" }
-gpui = { git = "https://github.com/zed-industries/zed.git", rev = "5b948e5aaba15cf4446cfdf9cef1cfddcb062bee", package = "gpui", default-features = false }
-gpui_platform = { git = "https://github.com/zed-industries/zed.git", rev = "5b948e5aaba15cf4446cfdf9cef1cfddcb062bee", package = "gpui_platform", features = ["font-kit", "runtime_shaders"] }
+gpui = { git = "https://github.com/zed-industries/zed.git", rev = "5b948e5aaba15cf4446cfdf9cef1cfddcb062bee", package = "gpui", default-features = false, features = ["x11"] }
+gpui_platform = { git = "https://github.com/zed-industries/zed.git", rev = "5b948e5aaba15cf4446cfdf9cef1cfddcb062bee", package = "gpui_platform", features = ["font-kit", "runtime_shaders", "x11"] }
 
 anyhow = "1.0"
 bitflags = "2.10"

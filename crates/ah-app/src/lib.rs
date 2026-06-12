@@ -7,8 +7,10 @@ use std::path::PathBuf;
 use ah_control::{UiLanguagePreference, UiThemeSchemePreference};
 use gpui::{
     App, AppContext, Bounds, Menu, MenuItem, SystemMenuType, TitlebarOptions, WindowBounds,
-    WindowOptions, point, px, size,
+    WindowOptions, size,
 };
+#[cfg(target_os = "macos")]
+use gpui::{point, px};
 use gpui_platform::application;
 use tokio::sync::mpsc;
 
@@ -20,6 +22,11 @@ use crate::shell::{
     SetThemePurple, SetThemeRed, SetThemeSoft, SetThemeWarm, SplitWindowDown, SplitWindowRight,
 };
 
+#[cfg(target_os = "macos")]
+const DESIGN_TRAFFIC_LIGHT_X_PX: f32 = 12.0;
+#[cfg(target_os = "macos")]
+const DESIGN_TRAFFIC_LIGHT_Y_PX: f32 = 10.0;
+
 const DESIGN_FONT_BYTES: [&[u8]; 4] = [
     include_bytes!("../assets/fonts/geist/geist-latin.woff2"),
     include_bytes!("../assets/fonts/geist/geist-latin-ext.woff2"),
@@ -27,8 +34,6 @@ const DESIGN_FONT_BYTES: [&[u8]; 4] = [
     include_bytes!("../assets/fonts/geist/geist-mono-latin-ext.woff2"),
 ];
 const APP_ICON_BYTES: &[u8] = include_bytes!("../assets/app-icon.jpg");
-const DESIGN_TRAFFIC_LIGHT_X_PX: f32 = 12.0;
-const DESIGN_TRAFFIC_LIGHT_Y_PX: f32 = 10.0;
 
 #[derive(Clone, Debug)]
 pub struct AppConfig {
@@ -222,16 +227,30 @@ pub(crate) fn refresh_app_menu(
 }
 
 fn design_window_options(bounds: Bounds<gpui::Pixels>) -> WindowOptions {
+    let titlebar = {
+        #[cfg(target_os = "macos")]
+        {
+            TitlebarOptions {
+                title: Some("AgentHouse".into()),
+                appears_transparent: true,
+                traffic_light_position: Some(point(
+                    px(DESIGN_TRAFFIC_LIGHT_X_PX),
+                    px(DESIGN_TRAFFIC_LIGHT_Y_PX),
+                )),
+            }
+        }
+        #[cfg(not(target_os = "macos"))]
+        {
+            TitlebarOptions {
+                title: Some("AgentHouse".into()),
+                appears_transparent: false,
+                traffic_light_position: None,
+            }
+        }
+    };
     WindowOptions {
         window_bounds: Some(WindowBounds::Windowed(bounds)),
-        titlebar: Some(TitlebarOptions {
-            title: Some("AgentHouse".into()),
-            appears_transparent: true,
-            traffic_light_position: Some(point(
-                px(DESIGN_TRAFFIC_LIGHT_X_PX),
-                px(DESIGN_TRAFFIC_LIGHT_Y_PX),
-            )),
-        }),
+        titlebar: Some(titlebar),
         ..Default::default()
     }
 }
