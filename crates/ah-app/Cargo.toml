@@ -1,0 +1,33 @@
+[package]
+name = "ah-app"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+
+[dependencies]
+ah-block.workspace = true
+ah-control.workspace = true
+ah-core.workspace = true
+ah-session.workspace = true
+ah-store.workspace = true
+ah-terminal.workspace = true
+ah-web.workspace = true
+ah-webview-macos = { path = "../ah-webview-macos" }
+ah-workspace.workspace = true
+anyhow.workspace = true
+gpui.workspace = true
+gpui_platform.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[lints]
+workspace = true

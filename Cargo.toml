@@ -1,0 +1,60 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ah-core",
+    "crates/ah-workspace",
+    "crates/ah-session",
+    "crates/ah-terminal",
+    "crates/ah-block",
+    "crates/ah-web",
+    "crates/ah-webview-macos",
+    "crates/ah-store",
+    "crates/ah-control",
+    "crates/ah-use",
+    "crates/ah-app",
+    "xtask",
+]
+default-members = ["crates/ah-app"]
+
+[workspace.package]
+edition = "2024"
+license = "Apache-2.0"
+publish = false
+rust-version = "1.95"
+
+[workspace.dependencies]
+ah-core = { path = "crates/ah-core" }
+ah-workspace = { path = "crates/ah-workspace" }
+ah-session = { path = "crates/ah-session" }
+ah-terminal = { path = "crates/ah-terminal" }
+ah-block = { path = "crates/ah-block" }
+ah-web = { path = "crates/ah-web" }
+ah-store = { path = "crates/ah-store" }
+ah-control = { path = "crates/ah-control" }
+ah-use = { path = "crates/ah-use" }
+alacritty_terminal = { git = "https://github.com/alacritty/alacritty.git", rev = "79adb086002be778cec5d3b90676594bfe2105bb" }
+gpui = { git = "https://github.com/zed-industries/zed.git", rev = "5b948e5aaba15cf4446cfdf9cef1cfddcb062bee", package = "gpui", default-features = false }
+gpui_platform = { git = "https://github.com/zed-industries/zed.git", rev = "5b948e5aaba15cf4446cfdf9cef1cfddcb062bee", package = "gpui_platform", features = ["font-kit", "runtime_shaders"] }
+
+anyhow = "1.0"
+bitflags = "2.10"
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+parking_lot = "0.12"
+portable-pty = "0.9"
+rusqlite = { version = "0.37", features = ["bundled"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+tokio = { version = "1.48", features = ["rt-multi-thread", "macros", "sync", "time", "process", "io-util"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+ureq = { version = "3.3.0", default-features = true }
+uuid = { version = "1.18", features = ["serde", "v7"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+unwrap_used = "deny"

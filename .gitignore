@@ -1,0 +1,13 @@
+/target/
+/crates/*/target/
+/experiments/*/target/
+/bottles/
+/.DS_Store
+/.idea/
+/.vscode/
+docs/*continuation*.md
+*.log
+*.db
+*.db-shm
+*.db-wal
+/.omc/

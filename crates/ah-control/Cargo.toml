@@ -1,0 +1,20 @@
+[package]
+name = "ah-control"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+ah-block.workspace = true
+ah-core.workspace = true
+ah-session.workspace = true
+ah-web.workspace = true
+ah-workspace.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

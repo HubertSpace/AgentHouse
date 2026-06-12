@@ -1,0 +1,20 @@
+[package]
+name = "ah-store"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+ah-block.workspace = true
+ah-control.workspace = true
+ah-core.workspace = true
+ah-session.workspace = true
+ah-workspace.workspace = true
+rusqlite.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true
