@@ -1,0 +1,12 @@
+[package]
+name = "cbindgen"
+version = "0.28.0"
+edition = "2024"
+publish = false
+license = "Apache-2.0"
+description = "AgentHouse shim for pinned GPUI macOS scene header generation"
+
+[lib]
+path = "src/lib.rs"
+
+[workspace]
